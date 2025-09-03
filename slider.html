@@ -1,0 +1,221 @@
+<div class="final-slider-container">
+  <div class="final-slider-wrapper">
+    <div class="final-slider-item">
+         <a href="https://tipsamanolx.com/help-center" target="_blank">
+      <img src="https://tipsamanolx.com/wp-content/uploads/2025/08/Help-Center.jpg" alt="slide-1">
+      </a>
+    </div>
+    <div class="final-slider-item">
+        <a href="https://tipsamanolx.com/help-center" target="_blank">
+      <img src="https://tipsamanolx.com/wp-content/uploads/2025/08/Panduan-Cara-Pasang-Iklan.jpg" alt="slide-2">
+      </a>
+    </div>
+    <div class="final-slider-item">
+        <a href="https://tipsamanolx.com/help-center" target="_blank">
+      <img src="https://tipsamanolx.com/wp-content/uploads/2025/08/custome-service.png" alt="slide-3">
+      </a>
+    </div>
+    <div class="final-slider-item">
+        <a href="https://tipsamanolx.com/help-center" target="_blank">
+      <img src="https://tipsamanolx.com/wp-content/uploads/2025/08/pusat-edukasi-seller.png" alt="slide-4">
+      </a>
+    </div>
+        <div class="final-slider-item">
+        <a href="https://tipsamanolx.com/help-center" target="_blank">
+      <img src="https://tipsamanolx.com/wp-content/uploads/2025/08/Foto-Keren.jpg" alt="slide-5">
+      </a>
+    </div>
+        <div class="final-slider-item">
+         <a href="https://tipsamanolx.com/help-center" target="_blank">
+      <img src="https://tipsamanolx.com/wp-content/uploads/2025/08/Help-Center.jpg" alt="slide-6">
+      </a>
+    </div>
+    </div>
+
+  <button class="final-nav-button final-prev-button">❮</button>
+  <button class="final-nav-button final-next-button">❯</button>
+</div>
+<div class="final-dots-container"></div>
+
+
+<style>
+.final-slider-container {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 30px; /* <-- TAMBAHKAN BARIS INI */
+}
+.final-slider-wrapper {
+  display: flex;
+  /* Padding horizontal untuk memberi ruang di tepi */
+  padding: 0 %; 
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.final-slider-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.final-slider-item {
+  /* Ubah flex-basis agar lebih dari 1 item muat */
+  flex: 0 0 30%; 
+  margin-right: 16px;
+  /* Ganti snap align ke tengah! */
+  scroll-snap-align: center; 
+  border-radius: 45px;
+  overflow: hidden;
+  transition: transform 0.3s ease; /* Tambahan untuk efek visual */
+}
+
+/* Sedikit efek visual untuk item yang aktif */
+.final-slider-item.active {
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .final-slider-item {
+    flex-basis: 80%; /* Sesuaikan juga untuk mobile */
+  }
+  .final-slider-wrapper {
+    padding: 0 10%; /* Kurangi padding di mobile */
+  }
+}
+
+  .final-slider-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  /* === PERUBAHAN PADA TOMBOL PANAH === */
+  .final-nav-button {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    background-color: transparent; /* Latar belakang dihilangkan */
+    border: none; /* Border dihilangkan */
+    font-size: 40px; /* Ukuran ikon panah diperbesar */
+    color: white; /* Warna ikon panah menjadi putih */
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4); /* Bayangan agar terbaca di atas gambar */
+    cursor: pointer;
+    z-index: 10;
+    padding: 0;
+    width: 50px; 
+    height: 50px;
+  }
+
+  .final-prev-button {
+    left: 5px;
+  }
+
+  .final-next-button {
+    right: 5px;
+  }
+
+/* === BULLETS SIMPLE === */
+.final-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  aspect-ratio: 1 / 1;   /* menjaga supaya tetap bulet */
+  border-radius: 50% !important;
+  background-color: #2d2d2d;
+  margin: 0 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none !important;
+  padding: 0 !important;   /* mencegah padding bawaan button */
+  line-height: 1 !important; /* mencegah efek memanjang */
+}
+
+.final-dots-container {
+  position: absolute;
+  bottom: 10px;      /* <-- UBAH NILAI INI (dari 0px menjadi 10px) */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+}
+
+.final-dot.active {
+  background-color: #0073e6;
+}
+
+</style>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const sliderRoot = document.querySelector('.final-slider-container').parentElement;
+  const wrapper = sliderRoot.querySelector('.final-slider-wrapper');
+  const items = sliderRoot.querySelectorAll('.final-slider-item');
+  const prevBtn = sliderRoot.querySelector('.final-prev-button');
+  const nextBtn = sliderRoot.querySelector('.final-next-button');
+  const dotsContainer = sliderRoot.querySelector('.final-dots-container');
+
+  if (!items.length) return;
+
+  // 1. Membuat Navigasi Titik (Bullets)
+  items.forEach((_, index) => {
+    const dot = document.createElement('button');
+    dot.classList.add('final-dot');
+    dot.setAttribute('aria-label', 'Go to slide ' + (index + 1));
+    dot.addEventListener('click', () => goToSlide(index));
+    dotsContainer.appendChild(dot);
+  });
+  
+  const dots = dotsContainer.querySelectorAll('.final-dot');
+  if(dots.length) dots[0].classList.add('active');
+
+  // === Fungsi Pindah Slide ===
+  let currentIndex = 0;
+  function goToSlide(index) {
+    if (index < 0) index = items.length - 1;
+    if (index >= items.length) index = 0;
+    currentIndex = index;
+    const scrollAmount = items[index].offsetLeft - wrapper.offsetLeft;
+    wrapper.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+    dots.forEach(dot => dot.classList.remove('active'));
+    dots[index].classList.add('active');
+  }
+
+  // 2. Fungsi untuk Tombol Panah
+  nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+  prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+
+  // 3. Auto Slide setiap 5 detik
+  let autoSlide = setInterval(() => {
+    goToSlide(currentIndex + 1);
+  }, 5000);
+
+  // 4. Pause auto slide saat mouse hover
+  sliderRoot.addEventListener('mouseenter', () => clearInterval(autoSlide));
+  sliderRoot.addEventListener('mouseleave', () => {
+    autoSlide = setInterval(() => {
+      goToSlide(currentIndex + 1);
+    }, 3000);
+  });
+
+  // 5. Sync dots dengan scroll manual (drag/geser)
+  const observer = new IntersectionObserver((entries) => {
+    let firstVisibleIndex = -1;
+    entries.forEach(entry => {
+      if (entry.isIntersecting && firstVisibleIndex < 0) {
+        firstVisibleIndex = Array.from(items).indexOf(entry.target);
+      }
+    });
+    if (firstVisibleIndex !== -1) {
+      currentIndex = firstVisibleIndex;
+      dots.forEach(dot => dot.classList.remove('active'));
+      dots[firstVisibleIndex].classList.add('active');
+    }
+  }, { root: wrapper, threshold: 0.5 });
+
+  items.forEach(item => observer.observe(item));
+});
+</script>
